@@ -15,7 +15,7 @@ Build a full ephys pipeline using the canonical pipeline modules
 """
 
 with open(path.join(here, 'requirements.txt')) as f:
-    requirements = f.read().split()
+    requirements = f.read().splitlines()
 
 setup(
     name='canonical-full-ephys-pipeline',
