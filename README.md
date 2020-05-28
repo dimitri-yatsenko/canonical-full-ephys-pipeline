@@ -16,6 +16,10 @@ This repository provides demonstrations for:
 
 Clone this repository from [here](https://github.com/vathes/canonical-full-ephys-pipeline)
 
+Navigate to the cloned repository directory and install:
+
+    pip install -e .
+
 At the root of the repository folder,
  create a new file `dj_local_conf.json` with the following template:
  
