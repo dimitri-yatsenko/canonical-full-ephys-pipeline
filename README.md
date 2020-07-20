@@ -12,13 +12,50 @@ This repository provides demonstrations for:
     + predefined directory lookup methods (see [here](./my_project/utils.py))
 3. Ingestion of clustering results (built-in routine from the ephys pipeline module)
 
-## Getting started
+## Installation instruction
+
+### Step 1 - clone this project
 
 Clone this repository from [here](https://github.com/vathes/canonical-full-ephys-pipeline)
 
-Navigate to the cloned repository directory and install:
++ Launch a new terminal and change directory to where you want to clone the repository to
+    ```
+    cd C:/Projects
+    ```
++ Clone the repository:
+    ```
+    clone https://github.com/vathes/canonical-full-ephys-pipeline 
+    ```
++ Change directory to ***project-treadmill***
+    ```
+    cd canonical-full-ephys-pipeline
+    ```
+
+### Step 2 - setup virtual environment
+It is highly recommended (though not strictly required) to create a virtual environment to run the pipeline.
++ To create a new virtual environment named ***venv***:
+    ```
+    virtualenv venv
+    ```
++ To activated the virtual environment:
+    + On Windows:
+        ```
+        .\venv\Scripts\activate
+        ```
+    + On Linux/macOS:
+        ```
+        source venv/bin/activate
+        ```
+*note: if `virtualenv` not yet installed, do `pip install --user virtualenv`*
+
+### Step 3 - Install this repository
+
+From the root of the cloned repository directory:
 
     pip install -e .
+
+
+### Step 4 - Configure the ***dj_local_conf.json***
 
 At the root of the repository folder,
  create a new file `dj_local_conf.json` with the following template:
@@ -49,6 +86,19 @@ Specify database's `hostname`, `username` and `password` properly.
 Specify a `database.prefix` to create the schemas.
 
 Setup your data directory following the convention described below.
+
+### Step 5 (optional) - Jupyter Notebook
+If you install this repository in a virtual environment, and would like to use it with Jupyter Notebook, follow the steps below:
+
+Create a kernel for the virtual environment
+
+    pip install ipykernel
+    
+    ipython kernel install --name=full-ephys
+
+At this point the setup/installation of this pipeline is completed. Users can start browsing the example jupyter notebooks for demo usage of the pipeline.
+
+    jupyter notebook
 
 ## Directory structure and file naming convention
 
@@ -92,7 +142,7 @@ root_data_dir/
     `subject_mmddyy*imec[0-9].ap.meta`
     
     
-## Populating this pipeline
+## Running this pipeline
 
 Once you have your data directory configured with the above convention,
  populating the pipeline with your data amounts to these 3 steps:
