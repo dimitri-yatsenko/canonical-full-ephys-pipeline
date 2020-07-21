@@ -1,6 +1,6 @@
 # Pipeline for extracellular electrophysiology using Neuropixels probe and kilosort clustering method
 
-Build a full ephys pipeline using the canonical pipeline modules
+Build a full ephys pipeline using the canonical pipeline elements
 + [lab-management](https://github.com/vathes/canonical-lab-management)
 + [colony-management](https://github.com/vathes/canonical-colony-management)
 + [ephys](https://github.com/vathes/canonical-ephys)
@@ -11,6 +11,24 @@ This repository provides demonstrations for:
     + predefined file/folder structure and naming convention
     + predefined directory lookup methods (see [here](./my_project/utils.py))
 3. Ingestion of clustering results (built-in routine from the ephys pipeline module)
+
+
+## Pipeline Architecture
+
+The electrophysiology pipeline presented here uses pipeline components from 3 DataJoint pipeline elements, 
+***lab-management***, ***colony-management*** and ***ephys***, assembled together to form a fully functional pipeline. 
+
+### lab-management
+
+![lab-management](images/lab_erd.svg)
+
+### colony-management
+
+![colony-management](images/subject_erd.svg)
+
+### assembled with ephys-element
+
+![assembled_pipeline](images/ephys_ERD-full_ephys.png)
 
 ## Installation instruction
 
@@ -52,7 +70,7 @@ It is highly recommended (though not strictly required) to create a virtual envi
 
 From the root of the cloned repository directory:
 
-    pip install -e .
+    pip install .
 
 
 ### Step 4 - Configure the ***dj_local_conf.json***
