@@ -165,7 +165,7 @@ root_data_dir/
 Once you have your data directory configured with the above convention,
  populating the pipeline with your data amounts to these 3 steps:
  
-1. Insert new subjects - modify and run this [script](my_project/insert_lookup.py) to insert new subjects
+1. Insert meta information - modify and run this [script](my_project/insert_lookup.py) to insert meta information (e.g. subject, equipment, etc.)
 2. Import session data - run:
 
     python my_project/ingestion.py
