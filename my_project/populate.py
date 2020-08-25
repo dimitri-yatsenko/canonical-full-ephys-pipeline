@@ -5,10 +5,10 @@ populate_settings = {'reserve_jobs': True, 'suppress_errors': True, 'display_pro
 
 
 def populate():
-    # populate "dj.Imported" tables
+    # populate "dj.Imported" and "dj.Computed" tables
     for tbl in ephys._table_classes:
-        if np.any([c.__name__ == 'Imported' for c in tbl.__bases__]):
-            print(f'--- Populating {tbl.__name__} ---')
+        if np.any([c.__name__ in ('Imported', 'Computed') for c in tbl.__bases__]):
+            print('\n--- Populating {} ---'.format(tbl.__name__))
             tbl.populate(**populate_settings)
 
 

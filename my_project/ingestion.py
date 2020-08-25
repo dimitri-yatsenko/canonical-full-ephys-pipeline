@@ -12,17 +12,17 @@ def ingest():
     # ========== Insert new "Session" ===========
     data_dir = get_ephys_root_data_dir()
 
-    sessions = []
+    # Folder structure: root / subject / session / probe / .ap.meta
+    sessions, sess_folder_names = [], []
     for subj_key in subject.Subject.fetch('KEY'):
         subj_dir = data_dir / subj_key['subject']
         if subj_dir.exists():
-            try:
-                meta_filepath = next(subj_dir.rglob('*.ap.meta'))
-            except StopIteration:
-                continue
-
-            npx_meta = neuropixels.NeuropixelsMeta(meta_filepath)
-            sessions.append({**subj_key, 'session_datetime': npx_meta.recording_time})
+            for meta_filepath in subj_dir.rglob('*.ap.meta'):
+                sess_folder = meta_filepath.parent.parent.name
+                if sess_folder not in sess_folder_names:
+                    npx_meta = neuropixels.NeuropixelsMeta(meta_filepath)
+                    sessions.append({**subj_key, 'session_datetime': npx_meta.recording_time})
+                    sess_folder_names.append(sess_folder)
 
     print(f'Inserting {len(sessions)} session(s)')
     Session.insert(sessions, skip_duplicates=True)
