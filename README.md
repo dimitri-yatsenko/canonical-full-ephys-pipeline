@@ -42,9 +42,9 @@ Clone this repository from [here](https://github.com/vathes/canonical-full-ephys
     ```
 + Clone the repository:
     ```
-    clone https://github.com/vathes/canonical-full-ephys-pipeline 
+    git clone https://github.com/vathes/canonical-full-ephys-pipeline 
     ```
-+ Change directory to ***project-treadmill***
++ Change directory to ***canonical-full-ephys-pipeline***
     ```
     cd canonical-full-ephys-pipeline
     ```
