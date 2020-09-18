@@ -1,4 +1,4 @@
-from my_project.init_ephys import subject
+from my_project import subject
 
 # ========== Insert new "Subject" ===========
 

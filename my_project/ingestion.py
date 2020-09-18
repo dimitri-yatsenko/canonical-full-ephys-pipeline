@@ -4,8 +4,8 @@ import uuid
 from ephys_loaders import neuropixels
 from djephys.utils import dict_to_hash
 
-from my_project.init_ephys import lab, subject, ephys, Session
-from my_project.utils import get_ephys_root_data_dir, get_ks_data_dir, extract_clustering_info
+from my_project import subject, ephys, Session
+from utils.path_utils import get_ephys_root_data_dir, get_ks_data_dir, extract_clustering_info
 
 
 def ingest():
