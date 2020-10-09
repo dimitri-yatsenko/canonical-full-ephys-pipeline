@@ -2,8 +2,7 @@ import datajoint as dj
 from djsubject import subject
 from djlab import lab
 from djephys import ephys
-from my_project import db_prefix
-from utils.path_utils import get_ephys_probe_data_dir, get_ks_data_dir
+from utils.path_utils import get_ephys_probe_data_dir, get_ks_data_dir, get_paramset_idx
 
 if 'custom' not in dj.config:
     dj.config['custom'] = {}
@@ -20,6 +19,15 @@ subject.declare(db_prefix + 'subject',
                               'Lab': lab.Lab,
                               'Protocol': lab.Protocol,
                               'User': lab.User})
+
+
+@lab.schema
+class SkullReference(dj.Lookup):
+    definition = """
+    skull_reference   : varchar(60)
+    """
+    contents = zip(['Bregma', 'Lambda'])
+
 
 # ============== Declare Session table ==============
 
@@ -39,8 +47,9 @@ class Session(dj.Manual):
 ephys.declare(dj.schema(db_prefix + 'ephys'),
               dependencies={'Subject': subject.Subject,
                             'Session': Session,
-                            'Location': lab.Location,
+                            'SkullReference': SkullReference,
                             'get_npx_data_dir': get_ephys_probe_data_dir,
+                            'get_paramset_idx': get_paramset_idx,
                             'get_ks_data_dir': get_ks_data_dir})
 
 # ---- Add neuropixels probes ----

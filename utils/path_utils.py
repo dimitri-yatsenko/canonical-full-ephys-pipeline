@@ -24,7 +24,7 @@ def get_ephys_probe_data_dir(probe_key):
     npx_meta_pattern = f'{subj}_{sess_date_string}*imec{probe_no}.ap.meta'
 
     try:
-        npx_meta_fp = next(root_dir.rglob('/'.join([dir_pattern, npx_meta_pattern])))
+        npx_meta_fp = next((root_dir / subj).rglob('/'.join([dir_pattern, npx_meta_pattern])))
     except StopIteration:
         return None
 
@@ -51,42 +51,5 @@ def get_ks_data_dir(probe_key):
     return ks2files[0]
 
 
-def extract_clustering_info(cluster_output_dir):
-    creation_time = None
-
-    phy_curation_indicators = ['Merge clusters', 'Split cluster', 'Change metadata_group']
-    # ---- Manual curation? ----
-    phylog_fp = cluster_output_dir / 'phy.log'
-    if phylog_fp.exists():
-        phylog = pd.read_fwf(phylog_fp, colspecs=[(6, 40), (41, 250)])
-        phylog.columns = ['meta', 'detail']
-        curation_row = [bool(re.match('|'.join(phy_curation_indicators), str(s))) for s in phylog.detail]
-        is_curated = bool(np.any(curation_row))
-        if creation_time is None and is_curated:
-            row_meta = phylog.meta[np.where(curation_row)[0].max()]
-            datetime_str = re.search('\d{2}-\d{2}-\d{2}\s\d{2}:\d{2}:\d{2}', row_meta)
-            if datetime_str:
-                creation_time = datetime.strptime(datetime_str.group(), '%Y-%m-%d %H:%M:%S')
-            else:
-                creation_time = datetime.fromtimestamp(phylog_fp.stat().st_ctime)
-                time_str = re.search('\d{2}:\d{2}:\d{2}', row_meta)
-                if time_str:
-                    creation_time = datetime.combine(creation_time.date(),
-                                                     datetime.strptime(time_str.group(), '%H:%M:%S').time())
-    else:
-        is_curated = False
-
-    # ---- Quality control? ----
-    metric_fp = cluster_output_dir / 'metrics.csv'
-    if metric_fp.exists():
-        is_qc = True
-        if creation_time is None:
-            creation_time = datetime.fromtimestamp(metric_fp.stat().st_ctime)
-    else:
-        is_qc = False
-
-    if creation_time is None:
-        spk_fp = next(cluster_output_dir.glob('spike_times.npy'))
-        creation_time = datetime.fromtimestamp(spk_fp.stat().st_ctime)
-
-    return creation_time, is_curated, is_qc
+def get_paramset_idx(rec_key):
+    return 0
