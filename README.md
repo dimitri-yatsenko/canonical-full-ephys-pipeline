@@ -126,13 +126,13 @@ The pipeline presented here is designed to work with the directory structure and
 root_data_dir/
 └───subject1/
 │   └───session0/
-│   │   └───probe0/
+│   │   └───imec0/
 │   │   │   │   *imec0.ap.meta
 │   │   │   └───ksdir/
 │   │   │       │   spike_times.npy
 │   │   │       │   templates.npy
 │   │   │       │   ...
-│   │   └───probe1/
+│   │   └───imec1/
 │   │       │   *imec1.ap.meta   
 │   │       └───ksdir/
 │   │           │   spike_times.npy
@@ -149,15 +149,15 @@ root_data_dir/
 + the ***subject*** directories must match the identifier of your subjects
 + the ***session*** directories must match the following naming convention:
  
-    `*_subject_mmddyy*`  (where `mmddyy` is the date of the session)
+    `*subject_mmddyy_HHMMSS*`  (where `mmddyy_HHMMSS` is the datetime of the session)
     
 + the ***probe*** directories must match the following naming convention:
 
-    `subject_mmddyy*_imec[0-9]` (where `[0-9]` is a one digit number specifying the probe number) 
+    `*imec[0-9]` (where `[0-9]` is a one digit number specifying the probe number) 
     
 + a neuropixels meta file is required per probe folder, with the following naming convention:
 
-    `subject_mmddyy*imec[0-9].ap.meta`
+    `*imec[0-9].ap.meta`
     
     
 ## Running this pipeline

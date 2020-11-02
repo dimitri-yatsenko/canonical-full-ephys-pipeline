@@ -1,11 +1,5 @@
 import datajoint as dj
 import pathlib
-import numpy as np
-import pandas as pd
-import re
-from datetime import datetime
-
-from ephys_loaders import neuropixels
 
 
 def get_ephys_root_data_dir():
@@ -14,26 +8,24 @@ def get_ephys_root_data_dir():
 
 
 def get_ephys_probe_data_dir(probe_key):
-    root_dir = get_ephys_root_data_dir()
-
     subj = probe_key['subject']
     probe_no = probe_key['insertion_number']
-    sess_date_string = probe_key['session_datetime'].strftime('%m%d%y')
+    sess_datetime_string = probe_key['session_datetime'].strftime('%m%d%y_%H%M%S')
 
-    dir_pattern = f'*{subj}_{sess_date_string}*_imec{probe_no}'
-    npx_meta_pattern = f'{subj}_{sess_date_string}*imec{probe_no}.ap.meta'
+    subj_dir = get_ephys_root_data_dir() / subj
+
+    sess_dir_pattern = f'*{subj}_{sess_datetime_string}*'
+    probe_dir_pattern = f'*imec{probe_no}'
+    npx_meta_pattern = f'*imec{probe_no}.ap.meta'
+
+    search_pattern = '/'.join([sess_dir_pattern, probe_dir_pattern, npx_meta_pattern])
 
     try:
-        npx_meta_fp = next((root_dir / subj).rglob('/'.join([dir_pattern, npx_meta_pattern])))
+        npx_meta_fp = next(subj_dir.rglob(search_pattern))
     except StopIteration:
-        return None
+        raise FileNotFoundError(f'Unable to find probe directory matching: {search_pattern}')
 
-    npx_meta = neuropixels.NeuropixelsMeta(npx_meta_fp)
-
-    # ensuring time difference between behavior-start and ephys-start is no more than 2 minutes - this is to handle multiple sessions in a day
-    start_time_difference = abs((npx_meta.recording_time - probe_key['session_datetime']).total_seconds())
-    if start_time_difference <= 120:
-        return npx_meta_fp.parent
+    return npx_meta_fp.parent
 
 
 ks2specs = ('mean_waveforms.npy', 'spike_times.npy')  # prioritize QC output, then orig
