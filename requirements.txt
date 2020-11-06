@@ -1,4 +1,4 @@
 datajoint
-canonical-ephys @ https://github.com/vathes/canonical-ephys.git
-canonical-lab-management @ https://github.com/vathes/canonical-lab-management.git
-canonical-colony-management @ https://github.com/vathes/canonical-colony-management.git
+canonical-ephys @ git+https://github.com/vathes/canonical-ephys.git
+canonical-lab-management @ git+https://github.com/vathes/canonical-lab-management.git
+canonical-colony-management @ git+https://github.com/vathes/canonical-colony-management.git
